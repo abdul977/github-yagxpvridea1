@@ -75,26 +75,28 @@ export function NoteCard({ note, onEdit, onDelete, className }: NoteCardProps) {
 
   return (
     <Card className={cn(
-      "p-6 space-y-4 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-2xl",
+      "p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-2xl",
       "bg-gradient-to-br from-white via-gray-50 to-gray-100",
       "border-2 border-transparent hover:border-purple-200/50",
+      "touch-manipulation",
       className
     )}>
-      <div className="flex justify-between items-start">
-        <div className="space-y-2">
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-0">
+        <div className="space-y-2 w-full sm:w-auto">
           <h3 className="
-            font-bold text-2xl 
+            font-bold text-xl sm:text-2xl 
             bg-clip-text text-transparent 
             bg-gradient-to-r from-purple-600 to-pink-600
             animate-gradient-x
+            pr-2
           ">
             {note.title}
           </h3>
-          <p className="text-sm text-gray-500 italic">
+          <p className="text-xs sm:text-sm text-gray-500 italic">
             {new Date(note.created_at).toLocaleDateString()}
           </p>
         </div>
-        <div className="space-x-2 flex items-center">
+        <div className="flex flex-wrap gap-1 sm:gap-2 items-center w-full sm:w-auto justify-end">
           <Button
             variant="ghost"
             size="icon"
@@ -104,10 +106,11 @@ export function NoteCard({ note, onEdit, onDelete, className }: NoteCardProps) {
               group 
               transition-all 
               hover:scale-110
+              h-8 w-8 sm:h-10 sm:w-10
             "
           >
             <Pencil className="
-              h-5 w-5 
+              h-4 w-4 sm:h-5 sm:w-5
               text-gray-500 
               group-hover:text-blue-500 
               transition-colors
@@ -122,10 +125,11 @@ export function NoteCard({ note, onEdit, onDelete, className }: NoteCardProps) {
               group 
               transition-all 
               hover:scale-110
+              h-8 w-8 sm:h-10 sm:w-10
             "
           >
             <Trash2 className="
-              h-5 w-5 
+              h-4 w-4 sm:h-5 sm:w-5
               text-gray-500 
               group-hover:text-red-500 
               transition-colors
@@ -140,10 +144,11 @@ export function NoteCard({ note, onEdit, onDelete, className }: NoteCardProps) {
               group
               transition-all
               hover:scale-110
+              h-8 w-8 sm:h-10 sm:w-10
             "
           >
             <Copy className="
-              h-5 w-5
+              h-4 w-4 sm:h-5 sm:w-5
               text-gray-500
               group-hover:text-green-500
               transition-colors
@@ -158,10 +163,11 @@ export function NoteCard({ note, onEdit, onDelete, className }: NoteCardProps) {
               group
               transition-all
               hover:scale-110
+              h-8 w-8 sm:h-10 sm:w-10
             "
           >
             <Share className="
-              h-5 w-5
+              h-4 w-4 sm:h-5 sm:w-5
               text-gray-500
               group-hover:text-purple-500
               transition-colors
@@ -169,13 +175,13 @@ export function NoteCard({ note, onEdit, onDelete, className }: NoteCardProps) {
           </Button>
         </div>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         {note.entries.map((entry) => (
           <div 
             key={entry.id} 
             className="
-              space-y-2 
-              p-4 
+              space-y-2 sm:space-y-3
+              p-3 sm:p-4
               bg-white/50 
               backdrop-blur-sm 
               rounded-lg 
@@ -186,6 +192,7 @@ export function NoteCard({ note, onEdit, onDelete, className }: NoteCardProps) {
             "
           >
             <p className="
+              text-sm sm:text-base
               text-gray-800 
               bg-clip-text 
               text-transparent 
@@ -194,7 +201,7 @@ export function NoteCard({ note, onEdit, onDelete, className }: NoteCardProps) {
               {entry.content}
             </p>
             {entry.audio_url && (
-              <div className="space-y-3">
+              <div className="flex flex-col gap-2 sm:gap-3">
                 <audio
                   ref={(el) => (audioRefs.current[entry.id] = el)}
                   src={entry.audio_url}
@@ -219,18 +226,21 @@ export function NoteCard({ note, onEdit, onDelete, className }: NoteCardProps) {
                     hover:from-purple-100 hover:to-pink-100 
                     border-purple-200/50 
                     group
+                    text-xs sm:text-sm
+                    py-1 px-2 sm:py-2 sm:px-3
+                    h-auto min-h-[32px] sm:min-h-[36px]
                   "
                 >
                   {playingAudioId === entry.id ? (
                     <PauseCircle className="
-                      h-5 w-5 
+                      h-4 w-4 sm:h-5 sm:w-5
                       text-red-500 
                       group-hover:scale-110 
                       transition-transform
                     " />
                   ) : (
                     <PlayCircle className="
-                      h-5 w-5 
+                      h-4 w-4 sm:h-5 sm:w-5
                       text-purple-500 
                       group-hover:scale-110 
                       transition-transform

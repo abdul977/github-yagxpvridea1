@@ -25,7 +25,7 @@ interface Note {
   entries: NoteEntry[];
   created_at: string;
   processingType: ProcessingVariant;
-  collaborators: Collaborator[]; // Changed from string to Collaborator[]
+  collaborators: Collaborator[];
 }
 
 interface NoteEditorProps {
@@ -38,7 +38,7 @@ interface NoteEditorProps {
     entries: NoteEntry[];
     collaborators?: Collaborator[];
   }) => void;
-  currentUserId: string; // Add current user ID for collaboration
+  currentUserId: string;
 }
 
 export function NoteEditor({ 
@@ -174,17 +174,18 @@ export function NoteEditor({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="
-        sm:max-w-[625px] 
+        max-w-[95vw] sm:max-w-[625px]
         bg-gradient-to-br from-white/80 via-gray-50/80 to-gray-100/80 
         backdrop-blur-xl 
         border-2 border-white/20 
         shadow-2xl 
-        rounded-2xl 
+        rounded-lg sm:rounded-2xl
         overflow-hidden
+        p-4 sm:p-6
       ">
         <DialogHeader>
           <DialogTitle className="
-            text-3xl font-bold 
+            text-2xl sm:text-3xl font-bold 
             bg-clip-text text-transparent 
             bg-gradient-to-r from-purple-600 to-pink-600
             animate-gradient-x
@@ -192,7 +193,7 @@ export function NoteEditor({
             {note ? "Edit Note" : "Create Note"}
           </DialogTitle>
         </DialogHeader>
-        <div className="space-y-6 py-4">
+        <div className="space-y-4 sm:space-y-6 py-2 sm:py-4">
           <div className="space-y-2">
             <Input
               placeholder="Note title"
@@ -209,19 +210,21 @@ export function NoteEditor({
                 duration-300
                 text-gray-800
                 placeholder-gray-500
+                text-base sm:text-lg
+                h-10 sm:h-12
               "
             />
           </div>
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {entries.map((entry, index) => (
               <div 
                 key={index} 
                 className="
                   space-y-2 
-                  p-4 
+                  p-3 sm:p-4
                   bg-white/30 
                   backdrop-blur-md 
-                  rounded-xl 
+                  rounded-lg sm:rounded-xl
                   border 
                   border-white/20 
                   hover:border-purple-500/50 
@@ -234,7 +237,7 @@ export function NoteEditor({
                 <Textarea
                   placeholder="Write your entry here..."
                   className="
-                    min-h-[100px] 
+                    min-h-[80px] sm:min-h-[100px]
                     bg-transparent 
                     border-white/30 
                     focus:border-purple-500/50 
@@ -244,11 +247,12 @@ export function NoteEditor({
                     duration-300
                     text-gray-800
                     placeholder-gray-500
+                    text-sm sm:text-base
                   "
                   value={entry.content}
                   onChange={(e) => updateEntryContent(index, e.target.value)}
                 />
-                <div className="flex items-center space-x-4 mt-2">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2">
                   {recordingEntryIndex === index ? (
                     <Button
                       type="button"
@@ -260,10 +264,11 @@ export function NoteEditor({
                         hover:bg-red-500/10 
                         border-red-500/30 
                         group
+                        h-8 w-8 sm:h-10 sm:w-10
                       "
                     >
                       <Square className="
-                        h-5 w-5 
+                        h-4 w-4 sm:h-5 sm:w-5
                         group-hover:scale-110 
                         transition-transform
                       " />
@@ -279,18 +284,19 @@ export function NoteEditor({
                         hover:bg-purple-500/10 
                         border-purple-500/30 
                         group
+                        h-8 w-8 sm:h-10 sm:w-10
                       "
                       disabled={recordingEntryIndex !== null}
                     >
                       {recordingEntryIndex === null ? (
                         <Mic className="
-                          h-5 w-5 
+                          h-4 w-4 sm:h-5 sm:w-5
                           group-hover:scale-110 
                           transition-transform
                         " />
                       ) : (
                         <Loader2 className="
-                          h-5 w-5 
+                          h-4 w-4 sm:h-5 sm:w-5
                           animate-spin 
                           text-purple-500
                         " />
@@ -302,10 +308,11 @@ export function NoteEditor({
                       controls 
                       src={entry.audio_url} 
                       className="
-                        flex-1 
+                        flex-1 max-w-full
                         bg-purple-50/50 
                         rounded-full 
                         backdrop-blur-sm
+                        h-8 sm:h-10
                       " 
                     />
                   )}
@@ -322,10 +329,11 @@ export function NoteEditor({
                         right-2 
                         hover:bg-red-500/10
                         group
+                        h-8 w-8 sm:h-10 sm:w-10
                       "
                     >
                       <Trash className="
-                        h-5 w-5 
+                        h-4 w-4 sm:h-5 sm:w-5
                         text-gray-500 
                         group-hover:text-red-500 
                         group-hover:scale-110 
@@ -346,10 +354,12 @@ export function NoteEditor({
                 hover:from-purple-100 hover:to-pink-100 
                 border-purple-200/50 
                 group
+                h-10 sm:h-12
+                text-sm sm:text-base
               "
             >
               <Plus className="
-                h-5 w-5 
+                h-4 w-4 sm:h-5 sm:w-5
                 mr-2 
                 group-hover:rotate-180 
                 transition-transform 
@@ -361,9 +371,9 @@ export function NoteEditor({
             </Button>
           </div>
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 mt-2 sm:mt-0">
           {note && (
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto order-3 sm:order-1">
               <CollaboratorPresence 
                 noteId={note.id} 
                 currentUserId={currentUserId} 
@@ -374,17 +384,19 @@ export function NoteEditor({
               />
             </div>
           )}
-          <ProcessingButton 
-            note={{
-              id: note?.id,
-              title,
-              entries,
-              created_at: note?.created_at,
-              processingType: ProcessingVariant.SUMMARY, // Default processing variant
-            collaborators: note?.collaborators || [],
-              content_versions: [] // Add empty content versions
-            }} 
-          />
+          <div className="order-2">
+            <ProcessingButton 
+              note={{
+                id: note?.id,
+                title,
+                entries,
+                created_at: note?.created_at,
+                processingType: ProcessingVariant.SUMMARY,
+                collaborators: note?.collaborators || [],
+                content_versions: []
+              }}
+            />
+          </div>
           <Button 
             onClick={handleSave} 
             className="
@@ -393,6 +405,10 @@ export function NoteEditor({
               hover:from-purple-600 hover:to-pink-600 
               transform hover:scale-105 
               transition-all
+              w-full sm:w-auto
+              h-10 sm:h-12
+              text-sm sm:text-base
+              order-1 sm:order-3
             "
           >
             Save Note

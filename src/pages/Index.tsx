@@ -14,25 +14,8 @@ import {
   Loader2, 
   PlusCircle 
 } from "lucide-react";
-import { ProcessingVariant } from "@/types/note";
 import { useAuth } from "@/hooks/use-auth";
-
-interface NoteEntry {
-  id: string;
-  content: string;
-  audio_url?: string;
-  entry_order: number;
-  created_at: string;
-}
-
-interface Note {
-  id: string;
-  title: string;
-  entries: NoteEntry[];
-  created_at: string;
-  processingType: ProcessingVariant;
-  collaborators?: any[];
-}
+import { Note, NoteEntry, ProcessingVariant } from "@/types/note";
 
 const Index = () => {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
@@ -80,11 +63,12 @@ const Index = () => {
       // First create the note
       const { data: note, error: noteError } = await supabase
         .from('notes')
-        .insert([{ 
+        .insert({ 
           title: noteData.title,
           user_id: user?.id,
-          collaborators: []
-        }])
+          collaborators: '[]',
+          content_versions: '[]'
+        })
         .select()
         .single();
 
@@ -215,12 +199,12 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 py-6 px-4 md:py-10">
+    <div className="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 py-4 px-3 sm:py-6 sm:px-4 md:py-10">
       <div className="container max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8 md:mb-12 bg-white/20 backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-2xl">
-          <div className="flex items-center space-x-4 mb-4 md:mb-0">
-            <NotebookPen className="h-8 w-8 md:h-10 md:w-10 text-white" />
-            <h1 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-6 sm:mb-8 md:mb-12 bg-white/20 backdrop-blur-sm rounded-lg md:rounded-xl p-3 sm:p-4 md:p-6 shadow-xl md:shadow-2xl">
+          <div className="flex items-center space-x-3 sm:space-x-4 mb-3 sm:mb-4 md:mb-0 w-full md:w-auto">
+            <NotebookPen className="h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 text-white" />
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
               My Notes
             </h1>
           </div>
@@ -238,7 +222,7 @@ const Index = () => {
             <EmptyState />
           </div>
         ) : (
-          <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {notes.map((note) => (
               <div 
                 key={note.id} 
@@ -255,15 +239,15 @@ const Index = () => {
           </div>
         )}
 
-        <div className="fixed bottom-4 right-4 md:bottom-8 md:right-8 flex items-center space-x-2 md:space-x-4">
-          <div className="bg-white/30 backdrop-blur-sm p-2 md:p-3 rounded-full shadow-2xl animate-pulse">
-            <Sparkles className="h-4 w-4 md:h-6 md:w-6 text-white" />
+        <div className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 md:bottom-8 md:right-8 flex items-center space-x-2 md:space-x-4">
+          <div className="bg-white/30 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-full shadow-lg md:shadow-2xl animate-pulse">
+            <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 md:h-6 md:w-6 text-white" />
           </div>
-          <div className="bg-white/30 backdrop-blur-sm p-2 md:p-3 rounded-full shadow-2xl animate-bounce">
-            <Lightbulb className="h-4 w-4 md:h-6 md:w-6 text-white" />
+          <div className="bg-white/30 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-full shadow-lg md:shadow-2xl animate-bounce">
+            <Lightbulb className="h-3 w-3 sm:h-4 sm:w-4 md:h-6 md:w-6 text-white" />
           </div>
-          <div className="bg-white/30 backdrop-blur-sm p-2 md:p-3 rounded-full shadow-2xl hover:animate-spin">
-            <Rocket className="h-4 w-4 md:h-6 md:w-6 text-white" />
+          <div className="bg-white/30 backdrop-blur-sm p-2 sm:p-2.5 md:p-3 rounded-full shadow-lg md:shadow-2xl hover:animate-spin">
+            <Rocket className="h-3 w-3 sm:h-4 sm:w-4 md:h-6 md:w-6 text-white" />
           </div>
         </div>
 
